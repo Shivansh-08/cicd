@@ -1,0 +1,28 @@
+name: Deploy to AWS EC2 using Self-Hosted Runner
+
+on:
+  push:
+    branches:
+      - main  # Runs when code is pushed to the main branch
+
+jobs:
+  deploy:
+    runs-on: self-hosted  # Uses the EC2 GitHub runner
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Pull Latest Code on EC2
+      run: |
+        cd /home/ubuntu/your-repo  # Change to your project directory
+        git pull origin main  # Pull the latest changes
+
+    - name: Install Dependencies (If Needed)
+      run: |
+        cd /home/ubuntu/your-repo
+        npm install  # Change if using a different stack
+
+    - name: Restart Application
+      run: |
+        pm2 restart all  # If using PM2 for Node.js apps
